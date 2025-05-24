@@ -1,0 +1,8 @@
+{
+  "appId": "com.tuempresa.pokefire",
+  "appName": "poke-fire-app",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}
