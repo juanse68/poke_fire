@@ -5,48 +5,41 @@ import { auth, db }                      from '../firebaseConfig.js';
 import mostrarLogin                      from './login.js';
 
 export default function mostrarRegistro() {
-  const app = document.getElementById("app");
-
+  const app = document.getElementById('app');
   app.innerHTML = `
     <h2>Registro</h2>
-    <input type="text"    id="nombre"   placeholder="Nombre"><br>
-    <input type="email"   id="correo"   placeholder="Correo electrónico"><br>
-    <input type="password" id="contrasena" placeholder="Contraseña"><br>
-    <input type="date"    id="fecha"    placeholder="Fecha de nacimiento"><br>
-    <input type="tel"     id="telefono" placeholder="Teléfono"><br>
+    <input id="nombre"   placeholder="Nombre" /><br/>
+    <input id="correo"   placeholder="Correo" /><br/>
+    <input id="contrasena" type="password" placeholder="Contraseña" /><br/>
+    <input id="fecha"    placeholder="Fecha de nacimiento" /><br/>
+    <input id="telefono" placeholder="Teléfono" /><br/>
     <button id="btnRegistro">Registrarse</button>
-    <p>¿Ya tienes cuenta? <a href="#" id="irLogin">Inicia sesión</a></p>
   `;
 
-  document.getElementById("btnRegistro").addEventListener("click", async (e) => {
-    e.preventDefault();
-    const nombre    = document.getElementById("nombre").value;
-    const correo    = document.getElementById("correo").value;
-    const contrasena= document.getElementById("contrasena").value;
-    const fecha     = document.getElementById("fecha").value;
-    const telefono  = document.getElementById("telefono").value;
+  document.getElementById('btnRegistro').onclick = async () => {
+    const nombre    = document.getElementById('nombre').value;
+    const correo    = document.getElementById('correo').value;
+    const contrasena= document.getElementById('contrasena').value;
+    const fecha     = document.getElementById('fecha').value;
+    const telefono  = document.getElementById('telefono').value;
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, correo, contrasena);
-      const uid = userCredential.user.uid;
-
-      // Guardamos en la colección "users"
-      await setDoc(doc(db, 'users', uid), {
-        nombre,
+      const { user } = await createUserWithEmailAndPassword(auth, correo, contrasena);
+      // Usa la colección "usuarios"
+      await setDoc(doc(db, 'usuarios', user.uid), {
+        uid:      user.uid,
         correo,
+        nombre,
         fecha,
-        telefono
+        telefono,
+        ganados:  0,
+        perdidos: 0
       });
-
-      alert('Usuario registrado correctamente');
+      alert('Registro exitoso');
       mostrarLogin();
-    } catch (error) {
-      alert('Error al registrarse: ' + error.message);
+    } catch (e) {
+      console.error(e);
+      alert('Error al registrarse: ' + e.message);
     }
-  });
-
-  document.getElementById("irLogin").addEventListener("click", (e) => {
-    e.preventDefault();
-    mostrarLogin();
-  });
+  };
 }
