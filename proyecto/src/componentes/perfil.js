@@ -41,7 +41,7 @@ export default async function mostrarPerfil() {
       <button id="guardar">Guardar cambios</button>
     </div>
   `;
-
+   
   document.getElementById("guardar").addEventListener("click", async () => {
     const nuevoNombre   = document.getElementById("nombre").value;
     const nuevaFecha    = document.getElementById("fecha").value;
