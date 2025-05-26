@@ -15,7 +15,7 @@ export default async function mostrarPerfil() {
   }
   const uid = user.uid;
 
-  const ref     = doc(db, 'users', uid);
+  const ref     = doc(db, 'usuarios', uid);
   const snap    = await getDoc(ref);
 
   if (!snap.exists()) {
